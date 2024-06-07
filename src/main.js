@@ -10,6 +10,8 @@ const router = new VueRouter({
   routes,
 });
 
+import { createApp } from "vue";
+
 import Vuelidate from "vuelidate";
 import "bootstrap/dist/css/bootstrap.css";
 import "bootstrap-vue/dist/bootstrap-vue.css";
