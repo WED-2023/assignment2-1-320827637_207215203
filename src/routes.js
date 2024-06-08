@@ -28,15 +28,20 @@ const routes = [
     component: () => import("./pages/AboutPage"),
   },
   {
-    path: "   ",
+    path: "/recipe/:recipeId",
     name: "recipe",
-    component: () => import("./pages/RecipeViewPage"),
+    component: () => import("./pages/RecipePage.vue"),
   },
+  // {
+  //   path: "   ",
+  //   name: "recipe",
+  //   component: () => import("./pages/RecipeViewPage"),
+  // },
   {
     path: "*",
     name: "notFound",
     component: NotFound,
-  },
+  }
 ];
 
 export default routes;

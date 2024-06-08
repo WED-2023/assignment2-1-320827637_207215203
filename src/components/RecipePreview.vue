@@ -1,19 +1,21 @@
 <template>
   <router-link
-    :to="{ name: 'recipe', params: { recipeId: recipe.id } }"
-    class="recipe-preview"
+      :to="{ name: 'recipe', params: { recipeId: recipe.id } }"
+      class="recipe-preview"
   >
     <div class="recipe-body">
-<!--      <img :src="recipe.image" class="recipe-image" />-->
-      <img :src="recipe.image" class="recipe-image" />
+      <img :src="recipe.image" class="recipe-image"  alt=""/>
     </div>
     <div class="recipe-footer">
       <div :title="recipe.title" class="recipe-title">
         {{ recipe.title }}
       </div>
       <ul class="recipe-overview">
-        <li>{{ recipe.readyInMinutes }} minutes</li>
-        <li>{{ recipe.aggregateLikes }} likes</li>
+        <li><strong>Preparation Time:</strong> {{ recipe.readyInMinutes }} Minutes</li>
+        <li><strong>Likes:</strong> {{ recipe.aggregateLikes }}</li>
+        <li><strong>Vegetarian:</strong> {{ recipe.vegetarian ? 'Yes' : 'No' }}</li>
+        <li><strong>Vegan:</strong> {{ recipe.vegan ? 'Yes' : 'No' }}</li>
+        <li><strong>Gluten Free:</strong> {{ recipe.glutenFree ? 'Yes' : 'No' }}</li>
       </ul>
     </div>
   </router-link>
@@ -66,16 +68,20 @@ export default {
 
 <style scoped>
 .recipe-preview {
-  display: inline-block;
+  display: flex;
+  flex-direction: column;
   width: 90%;
   height: 100%;
-  position: relative;
   margin: 10px 10px;
+  border: 1px solid #ddd;
+  border-radius: 10px;
+  box-shadow: 0 2px 5px rgba(0,0,0,0.15);
 }
 .recipe-preview > .recipe-body {
   width: 100%;
   height: 200px;
   position: relative;
+  border-bottom: 1px solid #ddd;
 }
 
 /* .recipe-preview .recipe-body .recipe-image {
@@ -92,57 +98,70 @@ export default {
 } */
 
 
+/* //.recipe-preview .recipe-body .recipe-image {
+//  margin-left: auto;
+//  margin-right: auto;
+//  margin-top: auto;
+//  margin-bottom: auto;
+//  display: block;
+//  width: 100%;
+//  height: auto;
+//  max-height: 200px;
+//  -webkit-background-size: contain;
+//  -moz-background-size: contain;
+//  background-size: contain;
+//} */
+
 .recipe-preview .recipe-body .recipe-image {
-  margin-left: auto;
-  margin-right: auto;
-  margin-top: auto;
-  margin-bottom: auto;
-  display: block;
-  width: 100%; /* Adjust this to change the width of the image */
-  height: auto; /* Adjust this to change the height of the image */
-  max-height: 200px; /* Add this to limit the maximum height of the image */
-  -webkit-background-size: contain;
-  -moz-background-size: contain;
-  background-size: contain;
+  width: 100%;
+  height: auto;
+  max-height: 200px;
+  object-fit: cover;
+  transition: transform 0.3s ease-in-out;
+
 }
 
 .recipe-preview .recipe-footer {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
   width: 100%;
-  height: 50%;
-  overflow: hidden;
+  padding: 10px;
 }
 
 .recipe-preview .recipe-footer .recipe-title {
-  padding: 10px 10px;
-  width: 100%;
-  font-size: 12pt;
+  font-size: 16pt;
   text-align: left;
-  white-space: nowrap;
-  overflow: hidden;
-  -o-text-overflow: ellipsis;
-  text-overflow: ellipsis;
+  font-weight: bold;
+  margin-bottom: 10px;
 }
+
+/*   //.recipe-preview .recipe-footer ul.recipe-overview {
+//  padding: 5px 10px;
+//  width: 100%;
+//  display: -webkit-box;
+//  display: -moz-box;
+//  display: -webkit-flex;
+//  display: -ms-flexbox;
+//  display: flex;
+//  -webkit-box-flex: 1;
+//  -moz-box-flex: 1;
+//  -o-box-flex: 1;
+//  box-flex: 1;
+//  -webkit-flex: 1 auto;
+//  -ms-flex: 1 auto;
+//  flex: 1 auto;
+//  table-layout: fixed;
+//  margin-bottom: 0px;
+//} */
 
 .recipe-preview .recipe-footer ul.recipe-overview {
-  padding: 5px 10px;
-  width: 100%;
-  display: -webkit-box;
-  display: -moz-box;
-  display: -webkit-flex;
-  display: -ms-flexbox;
   display: flex;
-  -webkit-box-flex: 1;
-  -moz-box-flex: 1;
-  -o-box-flex: 1;
-  box-flex: 1;
-  -webkit-flex: 1 auto;
-  -ms-flex: 1 auto;
-  flex: 1 auto;
-  table-layout: fixed;
-  margin-bottom: 0px;
+  flex-direction: column;
+  gap: 5px;
 }
 
-.recipe-preview .recipe-footer ul.recipe-overview li {
+/*.recipe-preview .recipe-footer ul.recipe-overview li {
   -webkit-box-flex: 1;
   -moz-box-flex: 1;
   -o-box-flex: 1;
@@ -153,5 +172,18 @@ export default {
   width: 90px;
   display: table-cell;
   text-align: center;
+  font-size: 12pt;
+} */
+
+.recipe-preview .recipe-footer ul.recipe-overview li {
+  font-size: 12pt;
+  text-align: left;
 }
+
+.recipe-preview .recipe-body .recipe-image:hover {
+  transform: scale(1.05);
+  cursor: pointer;
+}
+
+
 </style>
