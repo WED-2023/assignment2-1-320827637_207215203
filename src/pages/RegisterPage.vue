@@ -21,7 +21,7 @@
           Username length should be between 3-8 characters long
         </b-form-invalid-feedback>
         <b-form-invalid-feedback v-if="!$v.form.username.alpha">
-          Username alpha
+          Username can only contain letters
         </b-form-invalid-feedback>
       </b-form-group>
 
@@ -66,6 +66,10 @@
         >
           Have length between 5-10 characters long
         </b-form-invalid-feedback>
+        <b-form-invalid-feedback
+          v-if="$v.form.password.required && !$v.form.password.strong">
+          Your password has to contain at least one digit and at least one special character
+        </b-form-invalid-feedback>
       </b-form-group>
 
       <b-form-group
@@ -88,6 +92,27 @@
         >
           The confirmed password is not equal to the original password
         </b-form-invalid-feedback>
+      </b-form-group>
+
+      <b-form-group
+        id="email"
+        label-cols-sm="3"
+        label="Email:"
+        label-for="email"
+      >
+        <b-form-input
+          id="email"
+          v-model="$v.form.email.$model"
+          type="email"
+          :state="validateState('email')"
+        ></b-form-input>
+          <b-form-invalid-feedback v-if="!$v.form.email.required">
+            Email is required
+          </b-form-invalid-feedback>
+
+          <b-form-invalid-feedback v-if="$v.form.email.required && !$v.form.email.emailFormat">
+            Email is not in a valid format
+          </b-form-invalid-feedback>
       </b-form-group>
 
       <b-button type="reset" variant="danger">Reset</b-button>
@@ -161,11 +186,23 @@ export default {
       },
       password: {
         required,
-        length: (p) => minLength(5)(p) && maxLength(10)(p)
+        length: (p) => minLength(5)(p) && maxLength(10)(p),
+        strong: (p) => {
+          const atLeastOneDigitRegex = /\d/;
+          const atLeastOneSpecialCharRegex = /[^a-zA-Z0-9]/;
+          return atLeastOneDigitRegex.test(p) && atLeastOneSpecialCharRegex.test(p)
+        }
       },
       confirmedPassword: {
         required,
         sameAsPassword: sameAs("password")
+      },
+      email: {
+        required,
+        emailFormat: (email) => {
+          const validator = require('validator');
+          return validator.isEmail(email);
+        }
       }
     }
   },
