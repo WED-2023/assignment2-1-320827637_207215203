@@ -4,7 +4,8 @@
     class="recipe-preview"
   >
     <div class="recipe-body">
-      <img v-if="image_load" :src="recipe.image" class="recipe-image" />
+<!--      <img :src="recipe.image" class="recipe-image" />-->
+      <img :src="recipe.image" class="recipe-image" />
     </div>
     <div class="recipe-footer">
       <div :title="recipe.title" class="recipe-title">
@@ -77,7 +78,7 @@ export default {
   position: relative;
 }
 
-.recipe-preview .recipe-body .recipe-image {
+/* .recipe-preview .recipe-body .recipe-image {
   margin-left: auto;
   margin-right: auto;
   margin-top: auto;
@@ -88,6 +89,21 @@ export default {
   -webkit-background-size: cover;
   -moz-background-size: cover;
   background-size: cover;
+} */
+
+
+.recipe-preview .recipe-body .recipe-image {
+  margin-left: auto;
+  margin-right: auto;
+  margin-top: auto;
+  margin-bottom: auto;
+  display: block;
+  width: 100%; /* Adjust this to change the width of the image */
+  height: auto; /* Adjust this to change the height of the image */
+  max-height: 200px; /* Add this to limit the maximum height of the image */
+  -webkit-background-size: contain;
+  -moz-background-size: contain;
+  background-size: contain;
 }
 
 .recipe-preview .recipe-footer {
