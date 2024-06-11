@@ -18,18 +18,27 @@
             <router-link class="nav-link" :to="{ name: 'about' }">About</router-link>
           </li>
           <template v-if="$root.store.username">
+            <li class="nav-item">
+              <a class="nav-link">{{ $root.store.username }}</a>
+            </li>
             <li class="nav-item dropdown">
               <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                {{ $root.store.username }}
+                Profile
               </a>
               <div class="dropdown-menu" aria-labelledby="navbarDropdown">
-                <router-link class="dropdown-item" :to="{ name: 'profile' }">Profile</router-link>
-                <div class="dropdown-divider"></div>
-                <button class="dropdown-item" @click="Logout">Logout</button>
+                <router-link class="dropdown-item" :to="{ name: 'favoriteRecipes' }">Favorite Recipes</router-link>
+                <router-link class="dropdown-item" :to="{ name: 'myRecipes' }">My Recipes</router-link>
+                <router-link class="dropdown-item" :to="{ name: 'familyRecipes' }">Family Recipes</router-link>
               </div>
+            </li>
+            <li class="nav-item">
+              <button class="nav-link" @click="logout">Disconnect</button>
             </li>
           </template>
           <template v-else>
+            <li class="nav-item">
+              <a class="nav-link">Hello, Guest</a>
+            </li>
             <li class="nav-item">
               <router-link class="nav-link" :to="{ name: 'register' }">Register</router-link>
             </li>
@@ -38,10 +47,6 @@
             </li>
           </template>
         </ul>
-        <form class="form-inline my-2 my-lg-0">
-          <input class="form-control mr-sm-2" type="search" placeholder="Search" aria-label="Search">
-          <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Search</button>
-        </form>
       </div>
     </nav>
     <router-view />
@@ -52,13 +57,9 @@
 export default {
   name: "App",
   methods: {
-    Logout() {
+    logout() {
       this.$root.store.logout();
-      this.$root.toast("Logout", "User logged out successfully", "success");
-
-      this.$router.push("/").catch(() => {
-        this.$forceUpdate();
-      });
+      this.$router.push({ name: 'main' });
     }
   }
 };

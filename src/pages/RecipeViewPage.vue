@@ -11,6 +11,12 @@
             <div class="mb-3">
               <div>Ready in {{ recipe.readyInMinutes }} minutes</div>
               <div>Likes: {{ recipe.aggregateLikes }} likes</div>
+              <div>Servings: {{ recipe.servings }}</div>
+            </div>
+            <div class="mb-3">
+              <div>Vegetarian: {{ recipe.vegetarian ? "Yes" : "No" }}</div>
+              <div>Vegan: {{ recipe.vegan ? "Yes" : "No" }}</div>
+              <div>Gluten Free: {{ recipe.glutenFree ? "Yes" : "No" }}</div>
             </div>
             Ingredients:
             <ul>
@@ -89,7 +95,11 @@ export default {
         aggregateLikes,
         readyInMinutes,
         image,
-        title
+        title,
+        vegetarian,
+        vegan,
+        glutenFree,
+        servings
       } = response.data.recipe;
 
       let _instructions = analyzedInstructions
@@ -107,7 +117,11 @@ export default {
         aggregateLikes,
         readyInMinutes,
         image,
-        title
+        title,
+        vegetarian,
+        vegan,
+        glutenFree,
+        servings
       };
 
       this.recipe = _recipe;

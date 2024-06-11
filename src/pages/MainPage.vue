@@ -4,7 +4,7 @@
     <div class="main-content">
 <!--      <RecipePreviewList title="Random Recipes" class="RandomRecipes center" />-->
       <RecipePreviewList title="Explore this Recipes" class="RandomRecipes center" />
-      <div class="sign-in-prompt">
+      <div class="sign-in-prompt" v-if="!$root.store.username">
         <form @submit.prevent="signIn">
           <input type="text" v-model="username" placeholder="Username" required />
           <input type="password" v-model="password" placeholder="Password" required />
