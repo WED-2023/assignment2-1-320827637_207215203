@@ -63,10 +63,20 @@ export default {
         // );
 
         response = mockGetRecipeFullDetails(this.$route.params.recipeId);
+        console.log('Response:', response); // Add this line
 
         // console.log("response.status", response.status);
-        if (response.status !== 200) this.$router.replace("/NotFound");
-      } catch (error) {
+        // if (response.status !== 200) {
+        //   this.$router.replace("/NotFound");
+        // }
+        if (!response.data || !response.data.recipe) {
+          console.log('Response data or recipe is not defined'); // Add this line
+          this.$router.replace("/NotFound");
+        }
+      }
+      catch (error)
+      {
+        console.log('Error fetching recipe details:', error);
         console.log("error.response.status", error.response.status);
         this.$router.replace("/NotFound");
         return;
@@ -101,7 +111,10 @@ export default {
       };
 
       this.recipe = _recipe;
-    } catch (error) {
+    }
+    catch (error)
+    {
+      console.log('Error in created() method:', error); // Add this line
       console.log(error);
     }
   }
@@ -109,19 +122,57 @@ export default {
 </script>
 
 <style scoped>
+.container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin: 0 auto;
+  max-width: 800px;
+}
+
+.recipe-header {
+  text-align: center;
+  margin-bottom: 20px;
+}
+
+.recipe-header h1 {
+  font-size: 2em;
+  color: #333;
+}
+
+.recipe-header img {
+  width: 100%;
+  height: auto;
+  border-radius: 10px;
+}
+
+.recipe-body {
+  display: flex;
+  flex-direction: column;
+  margin-top: 20px;
+}
+
 .wrapper {
   display: flex;
+  justify-content: space-between;
+  margin-top: 20px;
 }
+
 .wrapped {
-  width: 50%;
+  width: 45%;
+  padding: 20px;
+  border-radius: 10px;
+  box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
 }
+
+.wrapped ul, .wrapped ol {
+  padding-left: 20px;
+}
+
 .center {
   display: block;
   margin-left: auto;
   margin-right: auto;
   width: 50%;
 }
-/* .recipe-header{
-
-} */
 </style>
