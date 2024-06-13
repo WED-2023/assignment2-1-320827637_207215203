@@ -34,6 +34,9 @@
             <li class="nav-item">
               <button class="nav-link" @click="logout">Disconnect</button>
             </li>
+            <li class="nav-item">
+              <router-link class="nav-link" :to="{ name: 'createRecipe' }">Create Recipe</router-link>
+            </li>
           </template>
           <template v-else>
             <li class="nav-item">

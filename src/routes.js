@@ -58,6 +58,11 @@ const routes = [
     component: () => import("./pages/FamilyRecipesPage.vue"),
   },
   {
+    path: "/createRecipe",
+    name: "createRecipe",
+    component: () => import("./pages/CreateRecipePage.vue"), // Assuming you have this file
+  },
+  {
     path: "*",
     name: "notFound",
     component: NotFound,
