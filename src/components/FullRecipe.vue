@@ -39,11 +39,25 @@
 </template>
 
 <script>
+import { userBus } from '../services/userBus.js';
+
 export default {
   props: {
     recipe: {
       type: Object,
       required: true
+    }
+  },
+  beforeRouteUpdate(to, from, next) {
+    if (to.params.recipeId) {
+      console.log('Marking recipe as seen:', to.params.recipeId);
+      userBus.markRecipeAsSeen(to.params.recipeId);
+    }
+    next();
+  },
+  computed: {
+    hasBeenSeen() {
+      return userBus.hasSeenRecipe(this.recipe.id);
     }
   }
 };

@@ -1,28 +1,36 @@
 <template>
   <div>
-    <h1>Family Recipes</h1>
-    <!-- Add your favorite recipes display logic here -->
+    <RecipePreviewList title="Family Recipes">
+      <!-- You can put additional content here -->
+    </RecipePreviewList>
   </div>
 </template>
 
 <script>
-// Add your favorite recipes logic here
+import RecipePreviewList from "../components/RecipePreviewList.vue";
+
 export default {
-  name: 'FamilyRecipesPage',
+  name: "FamilyRecipesPage",
+  components: {
+    RecipePreviewList
+  },
   data() {
     return {
-      // data properties
+      // data properties go here
     };
   },
   methods: {
-    // methods
+    // methods go here
   },
-  created() {
-    // lifecycle hooks
+  computed: {
+    // computed properties go here
+  },
+  mounted() {
+    // lifecycle hooks go here
   }
 };
 </script>
 
 <style scoped>
-/* Add your CSS styles here */
+/* CSS styles go here */
 </style>

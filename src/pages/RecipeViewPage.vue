@@ -7,6 +7,7 @@
 <script>
 import {mockGetRecipeFullDetails} from "../services/recipes.js";
 import FullRecipe from '../components/FullRecipe.vue';
+import {userBus} from "@/services/userBus";
 
 export default {
   components: {
@@ -65,6 +66,7 @@ export default {
       };
 
       this.recipe = _recipe;
+      userBus.markRecipeAsSeen(this.$route.params.recipeId);
     } catch (error) {
       console.log('Error in created() method:', error);
       console.log(error);
