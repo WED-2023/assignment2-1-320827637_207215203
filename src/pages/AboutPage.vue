@@ -17,7 +17,7 @@
 
     <p>Thank you for being a part of our journey. Let's cook, share, and celebrate the love of food together!</p>
 
-    <p class="signature">Mark & Itamer</p>
+    <p class="signature">Mark & Itamar</p>
   </div>
 </template>
 

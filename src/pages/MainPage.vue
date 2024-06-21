@@ -2,114 +2,84 @@
   <div class="container">
     <h1 class="title">Main Page</h1>
     <div class="main-content">
-<!--      <RecipePreviewList title="Random Recipes" class="RandomRecipes center" />-->
-      <RecipePreviewList title="Explore this Recipes" class="RandomRecipes center" />
-      <div class="sign-in-prompt" v-if="!$root.store.username">
-        <form @submit.prevent="signIn">
-          <input type="text" v-model="username" placeholder="Username" required />
-          <input type="password" v-model="password" placeholder="Password" required />
-          <button type="submit">Sign In</button>
+      <RecipePreviewList title="Explore Recipes" class="RandomRecipes center" />
+      <RecipePreviewList title="Last Viewed Recipes" class="LastViewedRecipes center" />
+      <div v-if="!$root.store.username" class="sign-in-prompt mt-4">
+        <form @submit.prevent="signIn" class="sign-in-form">
+          <div class="form-group">
+            <label for="username">Username</label>
+            <input type="text" v-model="username" class="form-control" id="username" placeholder="Enter username" required />
+          </div>
+          <div class="form-group">
+            <label for="password">Password</label>
+            <input type="password" v-model="password" class="form-control" id="password" placeholder="Enter password" required />
+          </div>
+          <button type="submit" class="btn login-btn">Login</button>
         </form>
-<!--        <router-link v-if="!$root.store.username" to="/login" tag="button">You need to Login to vue this</router-link>-->
-<!--        {{ !$root.store.username }}-->
       </div>
     </div>
-    <RecipePreviewList
-      title="Last Viewed Recipes"
-      :class="{
-        RandomRecipes: true,
-        blur: !$root.store.username,
-        center: true
-      }"
-      disabled
-    ></RecipePreviewList>
-    <!-- <div
-      style="position: absolute;top: 70%;left: 50%;transform: translate(-50%, -50%);"
-    >
-      Centeredasdasdad
-    </div>-->
   </div>
 </template>
 
 <script>
-import RecipePreviewList from "../components/RecipePreviewList";
+import RecipePreviewList from '../components/RecipePreviewList.vue';
+
 export default {
+  name: 'MainPage',
   components: {
     RecipePreviewList
   },
   data() {
     return {
-      username: "",
-      password: ""
+      username: '',
+      password: ''
     };
   },
   methods: {
     signIn() {
-      this.$root.store.login(this.username, this.password);
-    },
-
+      this.$root.store.login(this.username);
+      this.$router.push({ name: 'main' });
+    }
   }
 };
 </script>
 
-<style lang="scss" scoped>
-
+<style scoped>
 .main-content {
-  display: flex;
-  justify-content: space-between;
-}
-.RandomRecipes {
-  margin: 10px 0 10px;
+  margin-top: 20px;
 }
 
-.sign-in-prompt form {
-  display: flex;
-  flex-direction: column;
-  gap: 20px;
-  max-width: 300px;
-  margin: 0 auto;
+.sign-in-form {
+  max-width: 400px;
+  margin: auto;
   padding: 20px;
-  background-color: #f8f8f8;
+  background-color: #ffffff;
   border-radius: 8px;
-  box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
-}
-
-.sign-in-prompt form input {
-  padding: 10px;
-  font-size: 16px;
-  border: 1px solid #ddd;
-  border-radius: 4px;
-}
-
-.sign-in-prompt form button {
-  padding: 10px;
-  font-size: 16px;
-  cursor: pointer;
-  background-color: #007BFF;
-  color: white;
-  border: none;
-  border-radius: 4px;
-  transition: background-color 0.3s ease;
-}
-
-.sign-in-prompt form button:hover {
-  background-color: #0056b3;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
 }
 
 .sign-in-prompt {
-  flex: 1;
-  display: flex;
-  justify-content: center;
-  align-items: flex-start; /* Aligns the form at the top of the container */
-  padding: 20px; /* Adds some padding at the top */
+  text-align: center;
 }
 
-.blur {
-  -webkit-filter: blur(5px); /* Safari 6.0 - 9.0 */
-  filter: blur(2px);
+.title {
+  margin-bottom: 20px;
+  text-align: center;
+  color: #2c3e50;
 }
-::v-deep .blur .recipe-preview {
-  pointer-events: none;
-  cursor: default;
+
+.login-btn {
+  background-color: #4a90e2;
+  color: #ffffff;
+  border: none;
+  padding: 10px 20px;
+  font-size: 1rem;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.login-btn:hover {
+  background-color: darken(#4a90e2, 10%);
 }
 </style>
