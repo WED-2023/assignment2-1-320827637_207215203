@@ -60,7 +60,7 @@ const routes = [
   {
     path: "/createRecipe",
     name: "createRecipe",
-    component: () => import("./pages/CreateRecipePage.vue"), // Assuming you have this file
+    component: () => import("./pages/CreateRecipePage.vue"),
   },
   {
     path: "*",
