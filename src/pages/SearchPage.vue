@@ -39,7 +39,7 @@
 </template>
 
 <script>
-import { mockGetRecipesPreview } from "@/services/recipes"; // Ensure the path matches your project structure
+import axios from 'axios';
 
 export default {
   data() {
@@ -59,30 +59,22 @@ export default {
   methods: {
     fetchRecipes() {
       this.searchInitiated = true;
-      const { recipes } = mockGetRecipesPreview(parseInt(this.resultsLimit)).data;
-      this.searchResults = recipes.filter(recipe => {
-        return (this.searchQuery.length === 0 || recipe.title.toLowerCase().includes(this.searchQuery.toLowerCase())) &&
-               (this.selectedCuisine === '' || recipe.cuisine === this.selectedCuisine) &&
-               (this.selectedDiet === '' || recipe.diet === this.selectedDiet) &&
-               (this.selectedIntolerance === '' || recipe.intolerances.includes(this.selectedIntolerance));
+      axios.get('/recipes/search', {
+        params: {
+          query: this.searchQuery,
+          cuisine: this.selectedCuisine,
+          diet: this.selectedDiet,
+          intolerances: this.selectedIntolerance,
+          number: this.resultsLimit
+        }
+      })
+      .then(response => {
+        this.searchResults = response.data;
+      })
+      .catch(error => {
+        console.error('Error fetching recipes:', error);
+        this.searchResults = [];
       });
-      localStorage.setItem('lastSearch', JSON.stringify({
-        query: this.searchQuery,
-        cuisine: this.selectedCuisine,
-        diet: this.selectedDiet,
-        intolerance: this.selectedIntolerance,
-        number: this.resultsLimit
-      }));
-    },
-    initializeSearch() {
-      const lastSearch = JSON.parse(localStorage.getItem('lastSearch'));
-      if (lastSearch) {
-        this.searchQuery = lastSearch.query;
-        this.selectedCuisine = lastSearch.cuisine;
-        this.selectedDiet = lastSearch.diet;
-        this.selectedIntolerance = lastSearch.intolerance;
-        this.resultsLimit = lastSearch.number;
-      }
     },
     goToRecipe(id) {
       this.$router.push({ name: 'recipe', params: { recipeId: id } });

@@ -2,7 +2,7 @@
   <div class="container">
     <h1 class="title">Main Page</h1>
     <div class="main-content">
-      <RecipePreviewList title="Explore Recipes" class="RandomRecipes center" />
+      <RecipePreviewList title="Explore Recipes" :recipes= "randomRecipes" class="RandomRecipes center" />
       <RecipePreviewList title="Last Viewed Recipes" class="LastViewedRecipes center" />
       <div v-if="!$root.store.username" class="sign-in-prompt mt-4">
         <form @submit.prevent="signIn" class="sign-in-form">
@@ -22,7 +22,9 @@
 </template>
 
 <script>
+import axios from 'axios';
 import RecipePreviewList from '../components/RecipePreviewList.vue';
+import { GetRecipesPreview } from '@/services/recipes'; // Adjust path as necessary
 
 export default {
   name: 'MainPage',
@@ -31,16 +33,42 @@ export default {
   },
   data() {
     return {
+      randomRecipes: [],
       username: '',
       password: ''
     };
   },
+  async mounted() {
+    this.fetchRandomRecipes();
+  },
   methods: {
+    async fetchRandomRecipes() {
+      try {
+        const result = await GetRecipesPreview(); // Fetch 10 recipes
+        console.log("result = ", result);
+        this.randomRecipes = result.recipes;
+      } catch (error) {
+        console.error('Error fetching recipes:', error);
+        this.randomRecipes = [];
+      }
+    },
     signIn() {
-      this.$root.store.login(this.username);
-      this.$router.push({ name: 'main' });
+        axios.post('/users/login', {
+            username: this.username,
+            password: this.password
+        }).then(response => {
+            if (response.data.success) {
+                this.$root.store.login(this.username);  // Assuming this method also handles setting auth tokens or similar
+                this.$router.push({ name: 'main' });
+            } else {
+                alert('Login failed: ' + response.data.message);  // Provide user feedback
+            }
+        }).catch(error => {
+            console.error('Login error:', error);
+            alert('Login failed, please try again.');
+        });
     }
-  }
+}
 };
 </script>
 

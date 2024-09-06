@@ -1,18 +1,29 @@
 // src/services/recipes.js
-import recipe_full_view from "../assets/mocks/recipe_full_view.json";
-import recipe_preview from "../assets/mocks/recipe_preview.json";
+import axios from 'axios';
 
+// Base URL for the recipe API
+const BASE_URL = 'http://localhost:3000/recipes';
 
-export function mockGetRecipesPreview(amount = 1) {
-  let recipes = [];
-  for(let i = 0; i < amount; i++){
-    recipes.push(recipe_preview);
+// Fetch a preview of recipes, amount specifies how many recipes to fetch
+export async function GetRecipesPreview() {
+  try {
+    const response = await axios.get(`${BASE_URL}/randomRecipes`, {
+      params: {  }
+    });
+    return response.data;
+  } catch (error) {
+    console.error('Failed to fetch recipes:', error);
+    return { data: { recipes: [] } }; // Return an empty array if there's an error
   }
-
-  return { data: { recipes: recipes } };
 }
 
-export function mockGetRecipeFullDetails(recipeId) {
-    return { data: { recipe: recipe_full_view } } ;
+// Fetch full details of a specific recipe by ID
+export async function GetRecipeFullDetails(recipeId) {
+  try {
+    const response = await axios.get(`${BASE_URL}/recipe/${recipeId}`);
+    return response.data;
+  } catch (error) {
+    console.error('Failed to fetch recipe details:', error);
+    return { data: { recipe: null } }; // Return null if there's an error
   }
-  
+}
