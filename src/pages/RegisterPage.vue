@@ -26,6 +26,46 @@
       </b-form-group>
 
       <b-form-group
+        id="input-group-firstName"
+        label-cols-sm="3"
+        label="First Name:"
+        label-for="firstName"
+      >
+        <b-form-input
+          id="firstName"
+          v-model="$v.form.firstName.$model"
+          type="text"
+          :state="validateState('firstName')"
+        ></b-form-input>
+        <b-form-invalid-feedback v-if="!$v.form.firstName.required">
+          First name is required
+        </b-form-invalid-feedback>
+        <b-form-invalid-feedback v-else-if="!$v.form.firstName.alpha">
+          First name can only contain letters
+        </b-form-invalid-feedback>
+      </b-form-group>
+
+      <b-form-group
+        id="input-group-lastName"
+        label-cols-sm="3"
+        label="Last Name:"
+        label-for="lastName"
+      >
+        <b-form-input
+          id="lastName"
+          v-model="$v.form.lastName.$model"
+          type="text"
+          :state="validateState('lastName')"
+        ></b-form-input>
+        <b-form-invalid-feedback v-if="!$v.form.lastName.required">
+          Last name is required
+        </b-form-invalid-feedback>
+        <b-form-invalid-feedback v-else-if="!$v.form.lastName.alpha">
+          Last name can only contain letters
+        </b-form-invalid-feedback>
+      </b-form-group>
+
+      <b-form-group
         id="input-group-country"
         label-cols-sm="3"
         label="Country:"
@@ -154,6 +194,7 @@ import {
   sameAs,
   email
 } from "vuelidate/lib/validators";
+
 import { mockRegister } from "../services/auth.js";
 export default {
   name: "Register",
@@ -179,6 +220,14 @@ export default {
       username: {
         required,
         length: (u) => minLength(3)(u) && maxLength(8)(u),
+        alpha
+      },
+      firstName: {
+        required,
+        alpha
+      },
+      lastName: {
+        required,
         alpha
       },
       country: {
@@ -211,63 +260,56 @@ export default {
     this.countries.push(...countries);
     // console.log($v);
   },
-  methods: {
-    validateState(param) {
-      const { $dirty, $error } = this.$v.form[param];
-      return $dirty ? !$error : null;
-    },
-    async Register() {
-      try {
-
-        // const response = await this.axios.post(
-        //   // "https://test-for-3-2.herokuapp.com/user/Register",
-        //   this.$root.store.server_domain + "/Register",
-
-        //   {
-        //     username: this.form.username,
-        //     password: this.form.password
-        //   }
-        // );
-
-        const userDetails = {
-          username: this.form.username,
-          password: this.form.password
-        };
-
-        const response = mockRegister(userDetails);
-
-        this.$router.push("/login");
-        // console.log(response);
-      } catch (err) {
-        console.log(err.response);
-        this.form.submitError = err.response.data.message;
-      }
-    },
-
-    onRegister() {
-      // console.log("register method called");
-      this.$v.form.$touch();
-      if (this.$v.form.$anyError) {
-        return;
-      }
-      // console.log("register method go");
-      this.Register();
-    },
-    onReset() {
-      this.form = {
-        username: "",
-        firstName: "",
-        lastName: "",
-        country: null,
-        password: "",
-        confirmedPassword: "",
-        email: ""
+methods: {
+  validateState(param) {
+    const { $dirty, $error } = this.$v.form[param];
+    return $dirty ? !$error : null;
+  },
+  async Register() {
+    try {
+      const userDetails = {
+        username: this.form.username,
+        firstName: this.form.firstName,
+        lastName: this.form.lastName,
+        password: this.form.password,
+        country: this.form.country,
+        email: this.form.email
       };
-      this.$nextTick(() => {
-        this.$v.$reset();
-      });
+      
+      console.log('User details:', userDetails);
+
+      const response = await this.axios.post(
+        this.$root.store.server_domain + "/Register", userDetails
+      );
+      this.$router.push("/login");
+      console.log(response);
+    } catch (err) {
+      console.error('Registration error:', err); // Log the error details
+      this.form.submitError = err.message || "Registration failed";
     }
+  },
+  onRegister() {
+    this.$v.form.$touch();
+    if (this.$v.form.$anyError) {
+      return;
+    }
+    this.Register();
+  },
+  onReset() {
+    this.form = {
+      username: "",
+      firstName: "",
+      lastName: "",
+      country: null,
+      password: "",
+      confirmedPassword: "",
+      email: ""
+    };
+    this.$nextTick(() => {
+      this.$v.$reset();
+    });
   }
+}
 };
 </script>
 <style lang="scss" scoped>

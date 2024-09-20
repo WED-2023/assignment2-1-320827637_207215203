@@ -1,24 +1,36 @@
 <template>
   <div>
     <h1>Favorite Recipes</h1>
-    <!-- Add your favorite recipes display logic here -->
+    <FavoriterecipePreviewList :recipeIds="favoriteRecipeIds" title="Your Favorite Recipes" />
   </div>
 </template>
 
 <script>
-// Add your favorite recipes logic here
+import FavoriterecipePreviewList from '@/components/FavoriterecipePreviewList.vue';
+import { GetFavoriteRecipes } from '@/services/user';
+
 export default {
   name: 'FavoriteRecipesPage',
+  components: {
+    FavoriterecipePreviewList
+  },
   data() {
     return {
-      // data properties
+      favoriteRecipeIds: []
     };
   },
   methods: {
-    // methods
+    async fetchFavoriteRecipes() {
+      try {
+        this.favoriteRecipeIds = await GetFavoriteRecipes();
+        console.log('Favorite recipes here:', this.favoriteRecipeIds);
+      } catch (error) {
+        console.error('Error fetching favorite recipes:', error);
+      }
+    }
   },
   created() {
-    // lifecycle hooks
+    this.fetchFavoriteRecipes();
   }
 };
 </script>

@@ -70,6 +70,8 @@
 </template>
 
 <script>
+import axios from 'axios';
+
 export default {
   data() {
     return {
@@ -87,15 +89,91 @@ export default {
     };
   },
   methods: {
-    onSubmit() {
-      console.log('Recipe Data:', this.recipe);
-      // Here you would typically make an API call to save the recipe data
-      alert('Recipe created successfully!');
-      // Optionally clear the form or redirect the user
+    async onSubmit() {
+      try {
+        const recipeDetails = {
+          title: this.recipe.title,
+          readyInMinutes: this.recipe.readyInMinutes,
+          aggregateLikes: this.recipe.aggregateLikes,
+          vegetarian: this.recipe.vegetarian,
+          vegan: this.recipe.vegan,
+          glutenFree: this.recipe.glutenFree,
+          description: this.recipe.description,
+          ingredients: this.recipe.ingredients,
+          instructions: this.recipe.instructions
+        };
+
+        console.log('Recipe details:', recipeDetails);
+        const response = await axios.post(
+          this.$root.store.server_domain + "/users/createPersonalRecipe",
+          recipeDetails, 
+          { withCredentials: true }
+        );
+
+        console.log('Response:', response.data);
+
+        alert('Recipe created successfully!');
+      } catch (error) {
+        console.error('Error creating recipe:', error);
+        alert('Failed to create recipe.');
+      }
     }
   }
 };
 </script>
+
+
+<!-- <script>
+import axios from 'axios';
+
+export default {
+  data() {
+    return {
+      recipe: {
+        title: '',
+        readyInMinutes: 45,
+        aggregateLikes: 0,
+        vegetarian: false,
+        vegan: false,
+        glutenFree: false,
+        description: '',
+        ingredients: '',
+        instructions: ''
+      }
+    };
+  },
+  methods: {
+    async onSubmit() {
+      try {
+        const recipeDetails = {
+          title: this.recipe.title,
+          readyInMinutes: this.recipe.readyInMinutes,
+          aggregateLikes: this.recipe.aggregateLikes,
+          vegetarian: this.recipe.vegetarian,
+          vegan: this.recipe.vegan,
+          glutenFree: this.recipe.glutenFree,
+          description: this.recipe.description,
+          ingredients: this.recipe.ingredients,
+          instructions: this.recipe.instructions
+        };
+
+        console.log('Recipe details:', recipeDetails);
+        const response = await axios.post(
+          this.$root.store.server_domain + "/user/createRecipe", recipeDetails
+        );
+
+        console.log('Response:', response.data);
+
+        alert('Recipe created successfully!');
+        // Optionally clear the form or redirect the user
+      } catch (error) {
+        console.error('Error creating recipe:', error);
+        alert('Failed to create recipe.');
+      }
+    }
+  }
+};
+</script> -->
 
 <style scoped>
 </style>

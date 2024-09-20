@@ -1,15 +1,11 @@
 <template>
-  <router-link
-      :to="{ name: 'recipe', params: { recipeId: recipe.id } }"
-      class="recipe-preview"
-      :class="{ 'recipe-seen': hasBeenSeen }"
-  >
+  <router-link :to="{ name: 'recipe', params: { recipeId: recipe.id } }" class="recipe-preview" :class="{ 'recipe-seen': hasBeenSeen }">
     <div class="recipe-body">
-      <img :src="recipe.image" class="recipe-image"  alt=""/>
+      <img :src="recipe.image || 'default-image.png'" alt="" class="recipe-image" />
     </div>
     <div class="recipe-footer">
-      <div :title="recipe.title" class="recipe-title">
-        {{ recipe.title }}
+      <div class="recipe-title" :title="recipe.title">
+        {{ recipe.title || 'Recipe Title Unavailable' }}
       </div>
       <ul class="recipe-overview">
         <li><strong>Preparation Time:</strong> {{ recipe.readyInMinutes }} Minutes</li>
@@ -21,6 +17,7 @@
     </div>
   </router-link>
 </template>
+
 
 <script>
 import { userBus } from '../services/userBus.js';
@@ -34,9 +31,7 @@ export default {
   },
   watch: {
     '$route'(to, from) {
-      console.log('Route changed:', to.params.recipeId);
       if (to.params.recipeId && to.params.recipeId !== from.params.recipeId) {
-        console.log('Marking recipe as seen:', to.params.recipeId);
         userBus.markRecipeAsSeen(to.params.recipeId);
       }
     }
@@ -44,6 +39,13 @@ export default {
   computed: {
     hasBeenSeen() {
       return userBus.hasSeenRecipe(this.recipe.id);
+    }
+  },
+  mounted() {
+    // Ensure recipe data is available on mount or handle it gracefully if not
+    if (!this.recipe) {
+      console.error('Recipe data is unavailable.');
+      // Handle this case, perhaps redirect or show an error message
     }
   }
 };

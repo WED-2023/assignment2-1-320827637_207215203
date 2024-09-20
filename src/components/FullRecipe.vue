@@ -40,12 +40,24 @@
 
 <script>
 import { userBus } from '../services/userBus.js';
+import { addRecipeToFavorites } from '../services/user.js';
 
 export default {
   props: {
     recipe: {
       type: Object,
       required: true
+    }
+  },
+  methods: {
+    async addToFavorites() {
+      try {
+        await addRecipeToFavorites(this.recipe.id);
+        alert('Recipe added to favorites successfully!');
+      } catch (error) {
+        console.error('Error adding recipe to favorites:', error);
+        alert('Failed to add recipe to favorites.');
+      }
     }
   },
   beforeRouteUpdate(to, from, next) {
